@@ -28,11 +28,34 @@ public class TransactionDetail extends Auditable {
     @Transient
     private Integer transactionId;
 
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JsonIgnore
+    @JoinColumn(name = "services_id")
+    private Services services;
+
+    @Transient
     private Integer servicesId;
-    private Integer itemsId;
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JsonIgnore
+    @JoinColumn(name = "item_id")
+    private Item item;
+
+    @Transient
+    private Integer itemId;
 
     public Integer getTransactionId() {
         if (transaction != null) return transaction.getId();
         return transactionId;
+    }
+
+    public Integer getServicesId() {
+        if (services != null) return services.getId();
+        return servicesId;
+    }
+
+    public Integer getItemId() {
+        if (item != null) return item.getId();
+        return itemId;
     }
 }
