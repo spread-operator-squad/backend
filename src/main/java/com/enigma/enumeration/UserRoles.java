@@ -1,7 +1,10 @@
 package com.enigma.enumeration;
 
 import com.enigma.constans.RoleConstants;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@AllArgsConstructor @Getter
 public enum UserRoles {
     ADMINISTRATOR(RoleConstants.ROLE_ADMINISTRATOR),
     OWNER(RoleConstants.ROLE_OWNER),
@@ -10,11 +13,10 @@ public enum UserRoles {
 
     private String label;
 
-    UserRoles(String label) {
-        this.label = label;
-    }
-
-    public String getLabel() {
-        return label;
+    public static UserRoles getUserRoleByLabel(String label) {
+        for (UserRoles role: UserRoles.values()) {
+            if (role.getLabel().equals(label)) return role;
+        }
+        return null;
     }
 }

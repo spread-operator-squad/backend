@@ -2,7 +2,7 @@ package com.enigma.enumeration;
 
 import com.enigma.constans.GenderConstants;
 
-public enum  Gender {
+public enum Gender {
     MALE(GenderConstants.MALE),
     FEMALE(GenderConstants.FEMALE);
 
@@ -14,5 +14,12 @@ public enum  Gender {
 
     public String getLabel() {
         return label;
+    }
+
+    public static Gender getGenderByLabel(String label){
+        for (Gender gender:Gender.values()) {
+            if (gender.getLabel().equals(label)) return gender;
+        }
+        return null;
     }
 }
