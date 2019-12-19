@@ -1,6 +1,7 @@
 package com.enigma.services;
 
 import com.enigma.entities.Transaction;
+import com.enigma.services.impl.CustomResponse;
 
 public interface TransactionService {
     CustomResponse findAll();

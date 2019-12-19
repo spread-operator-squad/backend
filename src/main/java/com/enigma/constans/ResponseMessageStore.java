@@ -1,6 +1,6 @@
 package com.enigma.constans;
 
-public class ResponseStoreConstants {
+public class ResponseMessageStore {
     // Store Management Message
     public static final String SUCCESS_SAVE_STORE = "Success save store";
     public static final String SUCCESS_UPDATE_STORE = "Success update store";

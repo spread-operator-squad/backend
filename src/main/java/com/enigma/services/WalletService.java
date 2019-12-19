@@ -1,6 +1,7 @@
 package com.enigma.services;
 
 import com.enigma.entities.Wallet;
+import com.enigma.services.impl.CustomResponse;
 
 public interface WalletService {
     CustomResponse findAllWallet();

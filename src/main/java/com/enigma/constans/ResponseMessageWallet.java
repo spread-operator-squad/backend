@@ -1,6 +1,6 @@
 package com.enigma.constans;
 
-public class ResponseWalletConstants {
+public class ResponseMessageWallet {
     // Store Management Message
     public static final String SUCCESS_SAVE_WALLET = "Success save wallet";
     public static final String SUCCESS_UPDATE_WALLET = "Success update wallet";

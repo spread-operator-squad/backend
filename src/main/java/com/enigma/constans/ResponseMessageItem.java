@@ -1,6 +1,6 @@
 package com.enigma.constans;
 
-public class ResponseItemConstants {
+public class ResponseMessageItem {
     // Item Management Message
     public static final String SUCCESS_SAVE_ITEM = "Success save item";
     public static final String SUCCESS_UPDATE_ITEM = "Success update item";
