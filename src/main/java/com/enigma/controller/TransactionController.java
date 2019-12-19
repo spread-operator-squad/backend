@@ -1,8 +1,7 @@
 package com.enigma.controller;
 
 import com.enigma.entities.Transaction;
-import com.enigma.entities.User;
-import com.enigma.services.CustomResponse;
+import com.enigma.services.impl.CustomResponse;
 import com.enigma.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

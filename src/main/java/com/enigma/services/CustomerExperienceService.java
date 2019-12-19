@@ -1,6 +1,7 @@
 package com.enigma.services;
 
 import com.enigma.entities.CustomerExperience;
+import com.enigma.services.impl.CustomResponse;
 
 public interface CustomerExperienceService {
     CustomResponse findAll();

@@ -1,4 +1,4 @@
-package com.enigma.services;
+package com.enigma.services.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

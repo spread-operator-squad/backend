@@ -1,6 +1,6 @@
 package com.enigma.constans;
 
-public class ResponseServiceConstants {
+public class ResponseMessageService {
     // Service Management Message
     public static final String SUCCESS_SAVE_SERVICE = "Success save service";
     public static final String SUCCESS_UPDATE_SERVICE = "Success update service";

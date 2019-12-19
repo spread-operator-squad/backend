@@ -1,9 +1,13 @@
-package com.enigma.services;
+package com.enigma.services.impl;
 
-import com.enigma.constans.ResponseItemConstants;
+import com.enigma.constans.ResponseMessageItem;
 import com.enigma.entities.Item;
 import com.enigma.entities.Store;
 import com.enigma.repositories.ItemRepository;
+import com.enigma.services.ItemService;
+import com.enigma.services.StoreService;
+import com.enigma.services.impl.CustomResponse;
+import com.enigma.services.impl.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,29 +24,29 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public CustomResponse saveItem(Item item){
         if (item.getStoreId() != null) item.setStores((Store) storeService.findStoreById(item.getStoreId()).getData());
-        return new CustomResponse(new Status(HttpStatus.CREATED, ResponseItemConstants.SUCCESS_SAVE_ITEM), this.itemRepository.save(item));
+        return new CustomResponse(new Status(HttpStatus.CREATED, ResponseMessageItem.SUCCESS_SAVE_ITEM), this.itemRepository.save(item));
     }
 
     @Override
     public CustomResponse findAllItem() {
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseItemConstants.SUCCESS_GET_ITEMS), this.itemRepository.findAll());
+        return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageItem.SUCCESS_GET_ITEMS), this.itemRepository.findAll());
     }
 
     @Override
     public CustomResponse deleteItem(Integer id) {
         this.itemRepository.delete((Item) this.findItemById(id).getData());
-        return new CustomResponse(new Status(HttpStatus.NO_CONTENT,ResponseItemConstants.SUCCESS_DELETE_ITEM));
+        return new CustomResponse(new Status(HttpStatus.NO_CONTENT, ResponseMessageItem.SUCCESS_DELETE_ITEM));
     }
 
     @Override
     public CustomResponse findItemById(Integer id) {
         if (!(this.itemRepository.findById(id).isPresent())) return new CustomResponse(new Status(HttpStatus.NOT_FOUND, "Item is not found!"));
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseItemConstants.SUCCESS_GET_ITEM), this.itemRepository.findById(id).get());
+        return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageItem.SUCCESS_GET_ITEM), this.itemRepository.findById(id).get());
     }
 
     @Override
     public CustomResponse updateItem(Item item) {
         if (this.findItemById(item.getId()).getStatus().getCode().equals(HttpStatus.NOT_FOUND.value())) return this.findItemById(item.getId());
-        else return new CustomResponse(new Status(HttpStatus.OK,ResponseItemConstants.SUCCESS_UPDATE_ITEM), this.saveItem(item).getData());
+        else return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageItem.SUCCESS_UPDATE_ITEM), this.saveItem(item).getData());
     }
 }

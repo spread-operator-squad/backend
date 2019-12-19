@@ -1,6 +1,7 @@
 package com.enigma.services;
 
 import com.enigma.entities.BackendService;
+import com.enigma.services.impl.CustomResponse;
 
 public interface BackendServicesService {
     CustomResponse findAll();
