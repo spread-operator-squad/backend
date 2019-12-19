@@ -52,4 +52,11 @@ public class UserController {
         CustomResponse response = this.userService.deleteUserById(id);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
+
+    @RolesAllowed(RoleConstants.ROLE_ADMINISTRATOR)
+    @DeleteMapping("/{id}/block")
+    public ResponseEntity<CustomResponse> blockUserById(@PathVariable String id){
+        CustomResponse response = this.userService.blockUserById(id);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    }
 }

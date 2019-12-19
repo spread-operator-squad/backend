@@ -65,4 +65,11 @@ public class UserServiceImpl implements UserService {
         this.userRepository.delete((User) this.findUserById(id).getData());
         return new CustomResponse(new Status(HttpStatus.NO_CONTENT,ResponseMessageConstants.SUCCESS_DELETE_USER));
     }
+
+    @Override
+    public CustomResponse blockUserById(String id) {
+        User userFound = (User) this.findUserById(id).getData();
+        userFound.setIsActive(false);
+        return new CustomResponse(new Status(HttpStatus.OK, String.format(ResponseMessageConstants.SUCCESS_BLOCK_USER, userFound.getUsername())), updateUser(userFound));
+    }
 }

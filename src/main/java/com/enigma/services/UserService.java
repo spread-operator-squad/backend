@@ -8,4 +8,5 @@ public interface UserService {
     CustomResponse findUserById(String id);
     CustomResponse updateUser(User user);
     CustomResponse deleteUserById(String id);
+    CustomResponse blockUserById(String id);
 }
