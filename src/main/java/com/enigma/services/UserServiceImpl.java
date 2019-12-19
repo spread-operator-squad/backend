@@ -1,17 +1,30 @@
 package com.enigma.services;
 
 import com.enigma.constans.ResponseMessageConstants;
+import com.enigma.entities.Role;
 import com.enigma.entities.User;
+import com.enigma.entities.UserDetail;
+import com.enigma.enumeration.UserRoles;
+import com.enigma.repositories.RoleRepository;
 import com.enigma.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    RoleService roleService;
 
     @Override
     public CustomResponse findAll(){
@@ -20,7 +33,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CustomResponse saveUser(User user){
+        if (!(user.getUserRoles().isEmpty())) user.setUserRoles(userHasRole(user));
+        if (user.getUserDetail() != null) user.getUserDetail().setUser(user);
         return new CustomResponse(new Status(HttpStatus.CREATED,ResponseMessageConstants.SUCCESS_SAVE_USER), this.userRepository.save(user));
+    }
+
+    private Set<Role> userHasRole(User user) {
+        Set<Role> roles = new HashSet<>();
+        if (!(user.getRoles().isEmpty())) {
+            for (String role:user.getRoles()){
+                roles.add(roleService.getRoleByRoles(UserRoles.getUserRoleByLabel(role)));
+            }
+        }
+        return roles;
     }
 
     @Override
