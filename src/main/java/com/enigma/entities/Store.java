@@ -33,4 +33,7 @@ public class Store extends Auditable {
     @ManyToMany(mappedBy = "stores")
     private Set<Review> reviews = new HashSet<>();
 
+    @OneToMany (mappedBy = "stores", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
+
 }

@@ -1,6 +1,6 @@
 package com.enigma.constans;
 
-public class ResponseMessageConstants {
+public class ResponseMessageUser {
 
     // User Management Message
     public static final String SUCCESS_SAVE_USER = "Success save user";

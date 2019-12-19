@@ -1,6 +1,7 @@
 package com.enigma.services;
 
 import com.enigma.entities.Item;
+import com.enigma.services.impl.CustomResponse;
 
 public interface ItemService {
     CustomResponse saveItem(Item item);

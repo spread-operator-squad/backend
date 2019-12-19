@@ -1,6 +1,6 @@
 package com.enigma.constans;
 
-public class ResponseTransactionConstants {
+public class ResponseMessageTransaction {
     // Transaction Management Message
     public static final String SUCCESS_SAVE_TRANSACTION = "Success save transaction";
     public static final String SUCCESS_UPDATE_TRANSACTION = "Success update transaction";

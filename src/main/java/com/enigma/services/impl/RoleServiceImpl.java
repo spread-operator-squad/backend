@@ -1,8 +1,9 @@
-package com.enigma.services;
+package com.enigma.services.impl;
 
 import com.enigma.entities.Role;
 import com.enigma.enumeration.UserRoles;
 import com.enigma.repositories.RoleRepository;
+import com.enigma.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;

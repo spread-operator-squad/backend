@@ -1,6 +1,6 @@
 package com.enigma.constans;
 
-public class ResponseBackendServiceConstants {
+public class ResponseMessageBackendService {
     // Backend Service Management Message
     public static final String SUCCESS_SAVE_BACKEND_SERVICE = "Success save Backend Service";
     public static final String SUCCESS_UPDATE_BACKEND_SERVICE = "Success update Backend Service";

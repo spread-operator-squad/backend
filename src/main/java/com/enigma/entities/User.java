@@ -46,4 +46,9 @@ public class User extends Auditable{
 
     @ManyToMany(mappedBy = "users")
     private Set<Review> reviews = new HashSet<>();
+    @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Transaction> customer;
+
+    @OneToMany (mappedBy = "operator", cascade = CascadeType.ALL)
+    private List<Transaction> operator;
 }
