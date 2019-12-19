@@ -1,4 +1,7 @@
 package com.enigma.repositories;
 
-public interface TransactionDetailRepository {
+import com.enigma.entities.TransactionDetail;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TransactionDetailRepository extends JpaRepository<TransactionDetail, Integer> {
 }
