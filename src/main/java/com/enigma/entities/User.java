@@ -38,6 +38,14 @@ public class User extends Auditable{
     )
     private Set<Role> userRoles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Wallet> wallets;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private  List<CustomerExperience> customerExperiences;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Review> reviews = new HashSet<>();
     @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Transaction> customer;
 
