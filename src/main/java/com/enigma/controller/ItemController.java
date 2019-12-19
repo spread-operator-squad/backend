@@ -1,7 +1,6 @@
 package com.enigma.controller;
 
 import com.enigma.entities.Item;
-import com.enigma.entities.User;
 import com.enigma.services.CustomResponse;
 import com.enigma.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
