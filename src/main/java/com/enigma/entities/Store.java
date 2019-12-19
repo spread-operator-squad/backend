@@ -27,4 +27,7 @@ public class Store extends Auditable {
     @OneToMany(mappedBy = "stores", cascade = CascadeType.ALL)
     private List<Services> services;
 
+    @OneToMany (mappedBy = "stores", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
+
 }

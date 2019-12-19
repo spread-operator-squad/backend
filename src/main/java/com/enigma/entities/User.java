@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -36,4 +37,10 @@ public class User extends Auditable{
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> userRoles = new HashSet<>();
+
+    @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Transaction> customer;
+
+    @OneToMany (mappedBy = "operator", cascade = CascadeType.ALL)
+    private List<Transaction> operator;
 }
