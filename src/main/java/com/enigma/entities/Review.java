@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Review {
+public class Review extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
