@@ -49,4 +49,8 @@ public class WalletServiceImpl implements WalletService {
         this.walletRepository.delete((Wallet) this.findWalletById(id).getData());
         return new CustomResponse(new Status(HttpStatus.NO_CONTENT, ResponseMessageWallet.SUCCESS_DELETE_WALLET));
     }
+
+    public Wallet findWalletByUser(User user){
+        return this.walletRepository.findWalletByUser(user);
+    }
 }
