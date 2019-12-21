@@ -1,9 +1,12 @@
-package com.enigma.services;
+package com.enigma.services.impl;
 
 import com.enigma.entities.User;
 import com.enigma.security.JwtProperty;
 import com.enigma.security.JwtResponse;
 import com.enigma.security.UserPrincipalDetailsService;
+import com.enigma.services.AuthenticationService;
+import com.enigma.services.impl.CustomResponse;
+import com.enigma.services.impl.Status;
 import com.enigma.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +15,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.io.Serializable;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {

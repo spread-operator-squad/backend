@@ -1,8 +1,7 @@
 package com.enigma.controller;
 
 import com.enigma.entities.Item;
-import com.enigma.entities.User;
-import com.enigma.services.CustomResponse;
+import com.enigma.services.impl.CustomResponse;
 import com.enigma.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/items")
 public class ItemController {
 

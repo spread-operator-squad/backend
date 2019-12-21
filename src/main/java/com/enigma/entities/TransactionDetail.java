@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @NoArgsConstructor
@@ -18,7 +19,7 @@ public class TransactionDetail extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer weight;
-    private Integer subtotal;
+    private BigDecimal subtotal;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JsonIgnore
@@ -28,11 +29,34 @@ public class TransactionDetail extends Auditable {
     @Transient
     private Integer transactionId;
 
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JsonIgnore
+    @JoinColumn(name = "services_id")
+    private Services services;
+
+    @Transient
     private Integer servicesId;
-    private Integer itemsId;
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JsonIgnore
+    @JoinColumn(name = "item_id")
+    private Item item;
+
+    @Transient
+    private Integer itemId;
 
     public Integer getTransactionId() {
         if (transaction != null) return transaction.getId();
         return transactionId;
+    }
+
+    public Integer getServicesId() {
+        if (services != null) return services.getId();
+        return servicesId;
+    }
+
+    public Integer getItemId() {
+        if (item != null) return item.getId();
+        return itemId;
     }
 }

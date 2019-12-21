@@ -1,6 +1,6 @@
 package com.enigma.constans;
 
-public class ResponseCustomerExperienceConstants {
+public class ResponseMessageCustomerExperience {
     // Customer Experience Management Message
     public static final String SUCCESS_SAVE_CUSTOMER_EXPERIENCE = "Success save Customer Experience";
     public static final String SUCCESS_UPDATE_CUSTOMER_EXPERIENCE = "Success update Customer Experience";

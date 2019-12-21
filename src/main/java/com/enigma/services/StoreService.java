@@ -1,6 +1,7 @@
 package com.enigma.services;
 
 import com.enigma.entities.Store;
+import com.enigma.services.impl.CustomResponse;
 
 public interface StoreService {
     CustomResponse saveStore(Store store);

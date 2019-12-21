@@ -1,5 +1,6 @@
 package com.enigma.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,10 +26,29 @@ public class User extends Auditable{
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetail userDetail;
 
-    @ManyToMany
-            @JoinTable(
-                    joinColumns = @JoinColumn(name = "user_id"),
-                    inverseJoinColumns = @JoinColumn(name = "role_id")
-            )
-    private Set<Role> roles = new HashSet<>();
+    @Transient
+    private Set<String> roles = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> userRoles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Wallet> wallets;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private  List<CustomerExperience> customerExperiences;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Review> reviews = new HashSet<>();
+    @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Transaction> customer;
+
+    @OneToMany (mappedBy = "operator", cascade = CascadeType.ALL)
+    private List<Transaction> operator;
 }

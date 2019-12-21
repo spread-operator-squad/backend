@@ -1,8 +1,11 @@
-package com.enigma.services;
+package com.enigma.services.impl;
 
 import com.enigma.constans.ResponseMessageLocation;
 import com.enigma.entities.Location;
 import com.enigma.repositories.LocationRepository;
+import com.enigma.services.LocationService;
+import com.enigma.services.impl.CustomResponse;
+import com.enigma.services.impl.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

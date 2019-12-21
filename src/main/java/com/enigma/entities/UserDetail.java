@@ -2,16 +2,18 @@ package com.enigma.entities;
 
 import com.enigma.enumeration.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@NoArgsConstructor @Getter @Setter
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter
 public class UserDetail extends Auditable{
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -19,20 +21,18 @@ public class UserDetail extends Auditable{
     private String id;
     private String name;
     private Integer phoneNumber;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date birthDate;
     private String avatar;
     private Gender gender;
 
-    @OneToOne
-    @MapsId
     @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    public UserDetail(String name, Integer phoneNumber, Date birthDate, String avatar, Gender gender) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.birthDate = birthDate;
-        this.avatar = avatar;
-        this.gender = gender;
+    public void setGender(String gender) {
+        this.gender = Gender.getGenderByLabel(gender);
     }
 }
