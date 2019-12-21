@@ -22,7 +22,7 @@ public class UserPrincipal implements UserDetails {
         //Extract list of Roles
         this.user.getUserRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getUserRoles().getLabel()));
-        });;
+        });
         return authorities;
     }
 

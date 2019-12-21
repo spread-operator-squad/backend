@@ -1,6 +1,7 @@
 package com.enigma.controller;
 
 import com.enigma.entities.User;
+import com.enigma.enumeration.Device;
 import com.enigma.services.AuthenticationService;
 import com.enigma.services.impl.CustomResponse;
 import com.enigma.services.UserService;
@@ -23,8 +24,8 @@ public class AuthController {
 
     @PermitAll
     @PostMapping("/login")
-    public ResponseEntity<CustomResponse> createAuthenticationToken(@RequestBody User user) throws Exception{
-        CustomResponse response = this.authenticationService.createAuthenticationToken(user);
+    public ResponseEntity<CustomResponse> createAuthenticationToken(@RequestBody User user, @RequestParam String type) throws Exception{
+        CustomResponse response = this.authenticationService.createAuthenticationToken(user, Device.getDeviceByLabel(type));
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
 

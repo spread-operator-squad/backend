@@ -1,6 +1,7 @@
 package com.enigma.services.impl;
 
 import com.enigma.entities.User;
+import com.enigma.enumeration.Device;
 import com.enigma.security.JwtProperty;
 import com.enigma.security.JwtResponse;
 import com.enigma.security.UserPrincipalDetailsService;
@@ -28,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     JwtUtil jwtTokenUtil;
 
     @Override
-    public CustomResponse createAuthenticationToken(User user) throws Exception {
+    public CustomResponse createAuthenticationToken(User user, Device type) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword())
@@ -40,6 +41,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(user.getUsername());
 
-        return new CustomResponse(new Status(HttpStatus.OK, "Login Success"), new JwtResponse(JwtProperty.TYPE, jwtTokenUtil.generateToken(userDetails)));
+        return new CustomResponse(new Status(HttpStatus.OK, "Login Success"), new JwtResponse(JwtProperty.TYPE, jwtTokenUtil.generateToken(userDetails, type)));
     }
 }

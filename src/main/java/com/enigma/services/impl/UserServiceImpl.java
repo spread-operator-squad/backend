@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CustomResponse saveUser(User user){
-        if (!(user.getUserRoles().isEmpty())) user.setUserRoles(userHasRole(user));
+        if (!(user.getRoles().isEmpty())) user.setUserRoles(userHasRole(user));
         if (user.getUserDetail() != null) user.getUserDetail().setUser(user);
         return new CustomResponse(new Status(HttpStatus.CREATED, ResponseMessageUser.SUCCESS_SAVE_USER), this.userRepository.save(user));
     }
