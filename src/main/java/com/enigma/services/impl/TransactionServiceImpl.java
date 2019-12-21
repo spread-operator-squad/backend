@@ -41,7 +41,14 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public CustomResponse saveTransaction(Transaction transaction){
         transaction.setTotal(getTotalPrice(transaction));
+        transactionHasDetails(transaction);
         return new CustomResponse(new Status(HttpStatus.CREATED, ResponseMessageTransaction.SUCCESS_SAVE_TRANSACTION), this.transactionRepository.save(transaction));
+    }
+
+    private void transactionHasDetails(Transaction transaction) {
+        for (TransactionDetail detail:transaction.getTransactionDetails()){
+            detail.setTransaction(transaction);
+        }
     }
 
     private BigDecimal getTotalPrice(Transaction transaction) {
@@ -49,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
         for (TransactionDetail detail : transaction.getTransactionDetails()){
             Services services = (Services) servicesService.findServiceById(detail.getServicesId()).getData();
             Item item = (Item) itemService.findItemById(detail.getItemId()).getData();
-            detail.setSubtotal(services.getPrice().add(item.getPrice()));
+            detail.setSubtotal(services.getPrice().add(item.getPrice().multiply(new BigDecimal(detail.getWeight()))));
             totalPrice = totalPrice.add(detail.getSubtotal());
         }
         return totalPrice;
