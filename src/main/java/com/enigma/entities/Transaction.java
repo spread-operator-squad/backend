@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -48,9 +49,12 @@ public class Transaction extends Auditable {
     @Transient
     private String customerId;
 
-    private Integer total;
-    private Integer pay;
-    private Integer change;
+    @Transient
+    private String type;
+
+    private BigDecimal total;
+    private BigDecimal pay;
+    private BigDecimal change;
 
     @OneToMany (mappedBy = "transaction", cascade = CascadeType.ALL)
     private List<TransactionDetail> transactionDetails;

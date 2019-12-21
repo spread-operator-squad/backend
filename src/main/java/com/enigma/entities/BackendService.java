@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BackendService {
+public class BackendService extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

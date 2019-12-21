@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 
-public class CustomerExperience {
+public class CustomerExperience extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

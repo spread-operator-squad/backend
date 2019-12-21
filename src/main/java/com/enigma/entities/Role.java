@@ -24,6 +24,6 @@ public class Role extends Auditable {
     }
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "userRoles", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "userRoles", cascade = CascadeType.MERGE)
     private Set<User> users = new HashSet<>();
 }
