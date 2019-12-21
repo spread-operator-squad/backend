@@ -2,15 +2,14 @@ package com.enigma.services.impl;
 
 import com.enigma.constans.ResponseMessageItem;
 import com.enigma.entities.Item;
-import com.enigma.entities.Store;
+import com.enigma.exceptions.NotFoundException;
 import com.enigma.repositories.ItemRepository;
 import com.enigma.services.ItemService;
 import com.enigma.services.StoreService;
-import com.enigma.services.impl.CustomResponse;
-import com.enigma.services.impl.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -22,31 +21,31 @@ public class ItemServiceImpl implements ItemService {
     StoreService storeService;
 
     @Override
-    public CustomResponse saveItem(Item item){
-        if (item.getStoreId() != null) item.setStores((Store) storeService.findStoreById(item.getStoreId()).getData());
-        return new CustomResponse(new Status(HttpStatus.CREATED, ResponseMessageItem.SUCCESS_SAVE_ITEM), this.itemRepository.save(item));
+    public List<Item> findAllItem() {
+        return this.itemRepository.findAll();
     }
 
     @Override
-    public CustomResponse findAllItem() {
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageItem.SUCCESS_GET_ITEMS), this.itemRepository.findAll());
+    public Item saveItem(Item item) {
+        if (item.getStoreId() != null) item.setStores(storeService.findStoreById(item.getStoreId()));
+        return this.itemRepository.save(item);
     }
 
     @Override
-    public CustomResponse deleteItem(Integer id) {
-        this.itemRepository.delete((Item) this.findItemById(id).getData());
-        return new CustomResponse(new Status(HttpStatus.NO_CONTENT, ResponseMessageItem.SUCCESS_DELETE_ITEM));
+    public Item findItemById(Integer id) {
+        if (!(this.itemRepository.findById(id).isPresent())) throw new NotFoundException(ResponseMessageItem.FAILED_GET_ITEM);
+        return this.itemRepository.findById(id).get();
     }
 
     @Override
-    public CustomResponse findItemById(Integer id) {
-        if (!(this.itemRepository.findById(id).isPresent())) return new CustomResponse(new Status(HttpStatus.NOT_FOUND, "Item is not found!"));
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageItem.SUCCESS_GET_ITEM), this.itemRepository.findById(id).get());
+    public Item updateItem(Item item) {
+        this.findItemById(item.getId());
+        return this.saveItem(item);
     }
 
     @Override
-    public CustomResponse updateItem(Item item) {
-        if (this.findItemById(item.getId()).getStatus().getCode().equals(HttpStatus.NOT_FOUND.value())) return this.findItemById(item.getId());
-        else return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageItem.SUCCESS_UPDATE_ITEM), this.saveItem(item).getData());
+    public void deleteItem(Integer id) {
+        this.itemRepository.delete(findItemById(id));
+
     }
 }

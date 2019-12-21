@@ -20,7 +20,7 @@ public class Wallet extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private BigDecimal saldo;
+    private BigDecimal balance;
 
     @Transient
     private String userId;

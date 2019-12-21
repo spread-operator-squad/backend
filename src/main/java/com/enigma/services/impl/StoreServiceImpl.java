@@ -3,13 +3,14 @@ package com.enigma.services.impl;
 
 import com.enigma.constans.ResponseMessageStore;
 import com.enigma.entities.Store;
+import com.enigma.exceptions.NotFoundException;
 import com.enigma.repositories.StoreRepository;
 import com.enigma.services.StoreService;
-import com.enigma.services.impl.CustomResponse;
-import com.enigma.services.impl.Status;
+import com.enigma.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -17,31 +18,34 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     StoreRepository storeRepository;
 
+    @Autowired
+    UserService userService;
+
     @Override
-    public CustomResponse saveStore(Store store) {
-        return new CustomResponse(new Status(HttpStatus.CREATED, ResponseMessageStore.SUCCESS_SAVE_STORE), this.storeRepository.save(store));
+    public List<Store> findAllStore() {
+        return this.storeRepository.findAll();
     }
 
     @Override
-    public CustomResponse findAllStore() {
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageStore.SUCCESS_GET_STORES), this.storeRepository.findAll());
+    public Store saveStore(Store store) {
+        if (!(store.getOwnerId().isEmpty())) store.setOwner(userService.findUserById(store.getOwnerId()));
+        return storeRepository.save(store);
     }
 
     @Override
-    public CustomResponse deleteStore(Integer id) {
-        this.storeRepository.delete((Store) this.findStoreById(id).getData());
-        return new CustomResponse(new Status(HttpStatus.NO_CONTENT, ResponseMessageStore.SUCCESS_DELETE_STORE));
+    public Store findStoreById(Integer id) {
+        if (!(this.storeRepository.findById(id).isPresent())) throw new NotFoundException(ResponseMessageStore.FAILED_GET_STORE);
+        return this.storeRepository.findById(id).get();
     }
 
     @Override
-    public CustomResponse findStoreById(Integer id) {
-        if (!(this.storeRepository.findById(id).isPresent())) return new CustomResponse(new Status(HttpStatus.NOT_FOUND, "Store is not found!"));
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageStore.SUCCESS_GET_STORE), this.storeRepository.findById(id).get());
+    public Store updateStore(Store store) {
+        this.findStoreById(store.getId());
+        return this.saveStore(store);
     }
 
     @Override
-    public CustomResponse updateStore(Store store) {
-        if (this.findStoreById(store.getId()).getStatus().getCode().equals(HttpStatus.NOT_FOUND.value())) return this.findStoreById(store.getId());
-        else return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageStore.SUCCESS_UPDATE_STORE), this.saveStore(store).getData());
+    public void deleteStore(Integer id) {
+        this.storeRepository.delete(this.findStoreById(id));
     }
 }

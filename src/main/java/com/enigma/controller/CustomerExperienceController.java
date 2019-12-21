@@ -1,47 +1,41 @@
 package com.enigma.controller;
 
 import com.enigma.entities.CustomerExperience;
-import com.enigma.services.impl.CustomResponse;
 import com.enigma.services.CustomerExperienceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/customerexperiences")
+@RequestMapping("/customer-experiences")
 public class CustomerExperienceController {
 
     @Autowired
     CustomerExperienceService customerExperienceService;
 
+    @GetMapping
+    public List<CustomerExperience> getAllCustomerExperience(){
+        return this.customerExperienceService.findAll();
+    }
+
     @PostMapping
-    public ResponseEntity<CustomResponse> saveCustomerExperience(@RequestBody CustomerExperience customerExperience){
-        CustomResponse response = this.customerExperienceService.saveCustomerExperience(customerExperience);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public CustomerExperience saveCustomerExperience(@RequestBody CustomerExperience customerExperience){
+        return this.customerExperienceService.saveCustomerExperience(customerExperience);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomResponse> getCustomerExperienceById(@PathVariable Integer id){
-        CustomResponse response = this.customerExperienceService.findCustomerExperienceById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
-    }
-
-    @GetMapping
-    public ResponseEntity<CustomResponse> getAllCustomerExperience(){
-        CustomResponse response = this.customerExperienceService.findAll();
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public CustomerExperience getCustomerExperienceById(@PathVariable Integer id){
+        return this.customerExperienceService.findCustomerExperienceById(id);
     }
 
     @PutMapping
-    public ResponseEntity<CustomResponse> updateCustomerExperience(@RequestBody CustomerExperience customerExperience){
-        CustomResponse response = this.customerExperienceService.updateCustomerExperience(customerExperience);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public CustomerExperience updateCustomerExperience(@RequestBody CustomerExperience customerExperience){
+        return this.customerExperienceService.updateCustomerExperience(customerExperience);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomResponse> deleteCustomerExperience(@PathVariable Integer id){
-        CustomResponse response = this.customerExperienceService.deleteCustomerExperienceById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public void deleteCustomerExperience(@PathVariable Integer id){
+        this.customerExperienceService.deleteCustomerExperienceById(id);
     }
 }

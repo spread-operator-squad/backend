@@ -9,5 +9,5 @@ public class ResponseMessageLocation {
     public static final String SUCCESS_GET_LOCATIONS = "Success fetch location";
     public static final String SUCCESS_DELETE_LOCATION = "Success delete location";
 
-    public static final String FAILED_GET_USER = "Sorry, location is not found";
+    public static final String FAILED_GET_LOCATION = "Sorry, location is not found";
 }

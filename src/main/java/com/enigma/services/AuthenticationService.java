@@ -2,8 +2,8 @@ package com.enigma.services;
 
 import com.enigma.entities.User;
 import com.enigma.enumeration.Device;
-import com.enigma.services.impl.CustomResponse;
+import com.enigma.security.JwtResponse;
 
 public interface AuthenticationService {
-    CustomResponse createAuthenticationToken(User user, Device type) throws Exception;
+    JwtResponse createAuthenticationToken(User user, Device type) throws Exception;
 }

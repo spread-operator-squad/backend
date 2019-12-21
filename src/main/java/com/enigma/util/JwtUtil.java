@@ -42,7 +42,6 @@ public class JwtUtil {
 
     private String createToken(UserDetails userDetails, Device type) {
         Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
-        System.out.println(userDetails.getAuthorities());
         claims.put("scopes", userDetails.getAuthorities());
         return Jwts.builder()
                 .setClaims(claims)
