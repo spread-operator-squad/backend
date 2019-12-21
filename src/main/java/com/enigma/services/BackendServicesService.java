@@ -1,12 +1,13 @@
 package com.enigma.services;
 
 import com.enigma.entities.BackendService;
-import com.enigma.services.impl.CustomResponse;
+
+import java.util.List;
 
 public interface BackendServicesService {
-    CustomResponse findAll();
-    CustomResponse saveBackendService(BackendService backendService);
-    CustomResponse findBackendServiceById(Integer id);
-    CustomResponse updateBackendService(BackendService backendService);
-    CustomResponse deleteBackendServiceById(Integer id);
+    List<BackendService> findAll();
+    BackendService saveBackendService(BackendService backendService);
+    BackendService findBackendServiceById(Integer id);
+    BackendService updateBackendService(BackendService backendService);
+    void deleteBackendServiceById(Integer id);
 }

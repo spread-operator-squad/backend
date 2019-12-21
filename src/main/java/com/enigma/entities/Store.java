@@ -24,6 +24,9 @@ public class Store extends Auditable {
     private String name;
     private String avatar;
 
+    @Transient
+    private String ownerId;
+
     @OneToMany(mappedBy = "stores", cascade = CascadeType.ALL)
     private List<Item> items;
 
@@ -36,4 +39,13 @@ public class Store extends Auditable {
     @OneToMany (mappedBy = "stores", cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
+    public String getOwnerId() {
+        if (owner != null) return owner.getId();
+        return ownerId;
+    }
 }

@@ -1,12 +1,13 @@
 package com.enigma.services;
 
 import com.enigma.entities.CustomerExperience;
-import com.enigma.services.impl.CustomResponse;
+
+import java.util.List;
 
 public interface CustomerExperienceService {
-    CustomResponse findAll();
-    CustomResponse saveCustomerExperience(CustomerExperience customerExperience);
-    CustomResponse findCustomerExperienceById(Integer id);
-    CustomResponse updateCustomerExperience(CustomerExperience customerExperience);
-    CustomResponse deleteCustomerExperienceById(Integer id);
+    List<CustomerExperience> findAll();
+    CustomerExperience saveCustomerExperience(CustomerExperience customerExperience);
+    CustomerExperience findCustomerExperienceById(Integer id);
+    CustomerExperience updateCustomerExperience(CustomerExperience customerExperience);
+    void deleteCustomerExperienceById(Integer id);
 }

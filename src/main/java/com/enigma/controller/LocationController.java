@@ -2,12 +2,11 @@ package com.enigma.controller;
 
 
 import com.enigma.entities.Location;
-import com.enigma.services.impl.CustomResponse;
 import com.enigma.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/locations")
@@ -17,37 +16,31 @@ public class LocationController {
     LocationService locationService;
 
     @GetMapping
-    public ResponseEntity<CustomResponse> getAllLocation(){
-        CustomResponse response = this.locationService.findAll();
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public List<Location> getAllLocation(){
+        return this.locationService.findAll();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CustomResponse> getLocationById(@PathVariable Integer id){
-        CustomResponse response = this.locationService.findLocationById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Location getLocationById(@PathVariable Integer id){
+        return this.locationService.findLocationById(id);
     }
 
     @PostMapping
-    public ResponseEntity<CustomResponse> saveLocation(@RequestBody Location location){
-        CustomResponse response = this.locationService.saveLocation(location);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Location saveLocation(@RequestBody Location location){
+        return this.locationService.saveLocation(location);
     }
 
     @PutMapping
-    public ResponseEntity<CustomResponse> updateLocation(@RequestBody Location location){
-        CustomResponse response = this.locationService.updateLocation(location);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Location updateLocation(@RequestBody Location location){
+        return this.locationService.updateLocation(location);
     }
     @GetMapping("find/{type}")
-    public ResponseEntity<CustomResponse> findLocationByType(@PathVariable String type) {
-        CustomResponse response = this.locationService.findLocationByType(type);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Location findLocationByType(@PathVariable String type) {
+        return this.locationService.findLocationByType(type);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<CustomResponse> deleteLocationByID(@PathVariable Integer id){
-        CustomResponse response = this.locationService.deleteLocationById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public void deleteLocationByID(@PathVariable Integer id){
+        this.locationService.deleteLocationById(id);
     }
 }

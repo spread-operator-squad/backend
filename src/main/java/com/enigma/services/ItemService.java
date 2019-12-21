@@ -1,12 +1,13 @@
 package com.enigma.services;
 
 import com.enigma.entities.Item;
-import com.enigma.services.impl.CustomResponse;
+
+import java.util.List;
 
 public interface ItemService {
-    CustomResponse saveItem(Item item);
-    CustomResponse findAllItem();
-    CustomResponse deleteItem(Integer id);
-    CustomResponse findItemById(Integer id);
-    CustomResponse updateItem(Item item);
+    List<Item> findAllItem();
+    Item saveItem(Item item);
+    Item findItemById(Integer id);
+    Item updateItem(Item item);
+    void deleteItem(Integer id);
 }

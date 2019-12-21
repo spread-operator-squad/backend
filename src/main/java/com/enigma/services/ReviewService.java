@@ -1,12 +1,13 @@
 package com.enigma.services;
 
 import com.enigma.entities.Review;
-import com.enigma.services.impl.CustomResponse;
+
+import java.util.List;
 
 public interface ReviewService {
-    CustomResponse saveReview(Review review);
-    CustomResponse findAllReview();
-    CustomResponse deleteReview(Integer id);
-    CustomResponse findReviewById(Integer id);
-    CustomResponse updateReview(Review review);
+    List<Review> findAllReview();
+    Review saveReview(Review review);
+    Review findReviewById(Integer id);
+    Review updateReview(Review review);
+    void deleteReview(Integer id);
 }

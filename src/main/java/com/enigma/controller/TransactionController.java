@@ -1,12 +1,11 @@
 package com.enigma.controller;
 
 import com.enigma.entities.Transaction;
-import com.enigma.services.impl.CustomResponse;
 import com.enigma.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/transactions")
@@ -16,32 +15,27 @@ public class TransactionController {
     TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity<CustomResponse> getAllUser(){
-        CustomResponse response = this.transactionService.findAll();
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public List<Transaction> getAllTransaction(){
+        return this.transactionService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomResponse> getTransactionById(@PathVariable Integer id){
-        CustomResponse response = this.transactionService.findTransactionById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Transaction getTransactionById(@PathVariable Integer id){
+        return this.transactionService.findTransactionById(id);
     }
 
     @PostMapping
-    public ResponseEntity<CustomResponse> saveTransaction(@RequestBody Transaction transaction){
-        CustomResponse response = this.transactionService.saveTransaction(transaction);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Transaction saveTransaction(@RequestBody Transaction transaction){
+        return this.transactionService.saveTransaction(transaction);
     }
 
     @PutMapping
-    public ResponseEntity<CustomResponse> updateTransaction(@RequestBody Transaction transaction){
-        CustomResponse response = this.transactionService.updateTransaction(transaction);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Transaction updateTransaction(@RequestBody Transaction transaction){
+        return this.transactionService.updateTransaction(transaction);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomResponse> deleteTransactionByID(@PathVariable Integer id){
-        CustomResponse response = this.transactionService.deleteTransactionById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public void deleteTransactionByID(@PathVariable Integer id){
+        this.transactionService.deleteTransactionById(id);
     }
 }

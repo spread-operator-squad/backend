@@ -1,13 +1,14 @@
 package com.enigma.services;
 
 import com.enigma.entities.User;
-import com.enigma.services.impl.CustomResponse;
+
+import java.util.List;
 
 public interface UserService {
-    CustomResponse findAll();
-    CustomResponse saveUser(User user);
-    CustomResponse findUserById(String id);
-    CustomResponse updateUser(User user);
-    CustomResponse deleteUserById(String id);
-    CustomResponse blockUserById(String id);
+    List<User> findAll();
+    User saveUser(User user);
+    User findUserById(String id);
+    User updateUser(User user);
+    void deleteUserById(String id);
+    User blockUserById(String id);
 }

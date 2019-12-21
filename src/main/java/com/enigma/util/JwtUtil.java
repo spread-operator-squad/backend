@@ -1,5 +1,6 @@
 package com.enigma.util;
 
+import com.enigma.enumeration.Device;
 import com.enigma.security.JwtProperty;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -35,16 +36,28 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+    public String generateToken(UserDetails userDetails, Device type) {
+        return createToken(userDetails, type);
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims)
-                .setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+    private String createToken(UserDetails userDetails, Device type) {
+        Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
+        claims.put("scopes", userDetails.getAuthorities());
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(getExpiration(type))
                 .signWith(SignatureAlgorithm.HS256, JwtProperty.SECRET).compact();
+    }
+
+    public Date getExpiration(Device type) {
+        switch (type) {
+            case MOBILE: return new Date(System.currentTimeMillis() * 2);
+            case WEB: return new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10);
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

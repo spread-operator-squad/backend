@@ -19,8 +19,8 @@ public class BackendService extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String end_point;
-    private String http_method;
+    private String endPoint;
+    private String httpMethod;
     private String code;
 
     @Transient

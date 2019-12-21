@@ -1,15 +1,14 @@
 package com.enigma.services.impl;
 
 import com.enigma.entities.User;
+import com.enigma.enumeration.Device;
+import com.enigma.exceptions.BadRequestException;
 import com.enigma.security.JwtProperty;
 import com.enigma.security.JwtResponse;
 import com.enigma.security.UserPrincipalDetailsService;
 import com.enigma.services.AuthenticationService;
-import com.enigma.services.impl.CustomResponse;
-import com.enigma.services.impl.Status;
 import com.enigma.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,18 +27,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     JwtUtil jwtTokenUtil;
 
     @Override
-    public CustomResponse createAuthenticationToken(User user) throws Exception {
+    public JwtResponse createAuthenticationToken(User user, Device type) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword())
             );
         } catch (BadCredentialsException e) {
-            return new CustomResponse(new Status(HttpStatus.BAD_REQUEST, "Login failed"));
+            throw new BadRequestException("Username and password is invalid");
         }
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(user.getUsername());
-
-        return new CustomResponse(new Status(HttpStatus.OK, "Login Success"), new JwtResponse(JwtProperty.TYPE, jwtTokenUtil.generateToken(userDetails)));
+        return new JwtResponse(JwtProperty.TYPE, jwtTokenUtil.generateToken(userDetails, type));
     }
 }
