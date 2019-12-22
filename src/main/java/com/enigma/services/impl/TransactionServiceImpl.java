@@ -3,23 +3,20 @@ package com.enigma.services.impl;
 
 import com.enigma.constans.ResponseMessageTransaction;
 import com.enigma.entities.*;
-import com.enigma.repositories.TransactionDetailRepository;
+import com.enigma.exceptions.NotFoundException;
 import com.enigma.repositories.TransactionRepository;
 import com.enigma.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     TransactionRepository transactionRepository;
-
-    @Autowired
-    TransactionDetailRepository transactionDetailRepository;
 
     @Autowired
     UserService userService;
@@ -34,28 +31,24 @@ public class TransactionServiceImpl implements TransactionService {
     WalletService walletService;
 
     @Override
-    public CustomResponse findAll(){
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageTransaction.SUCCESS_GET_TRANSACTIONS), this.transactionRepository.findAll());
+    public List<Transaction> findAll() {
+        return this.transactionRepository.findAll();
     }
 
     @Override
-    public CustomResponse saveTransaction(Transaction transaction){
+    public Transaction saveTransaction(Transaction transaction) {
         transaction.setTotal(getTotalPrice(transaction));
-        transactionHasDetails(transaction);
-        return new CustomResponse(new Status(HttpStatus.CREATED, ResponseMessageTransaction.SUCCESS_SAVE_TRANSACTION), this.transactionRepository.save(transaction));
-    }
-
-    private void transactionHasDetails(Transaction transaction) {
-        for (TransactionDetail detail:transaction.getTransactionDetails()){
+        for (TransactionDetail detail : transaction.getTransactionDetails()) {
             detail.setTransaction(transaction);
         }
+        return this.transactionRepository.save(transaction);
     }
 
     private BigDecimal getTotalPrice(Transaction transaction) {
         BigDecimal totalPrice = new BigDecimal(0);
-        for (TransactionDetail detail : transaction.getTransactionDetails()){
-            Services services = (Services) servicesService.findServiceById(detail.getServicesId()).getData();
-            Item item = (Item) itemService.findItemById(detail.getItemId()).getData();
+        for (TransactionDetail detail : transaction.getTransactionDetails()) {
+            Services services = servicesService.findServicesById(detail.getServicesId());
+            Item item = itemService.findItemById(detail.getItemId());
             detail.setSubtotal(services.getPrice().add(item.getPrice().multiply(new BigDecimal(detail.getWeight()))));
             totalPrice = totalPrice.add(detail.getSubtotal());
         }
@@ -63,25 +56,24 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public CustomResponse findTransactionById(Integer id){
-        if (!(this.transactionRepository.findById(id).isPresent())) return new CustomResponse(new Status(HttpStatus.NOT_FOUND, "Transaction is not found"));
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageTransaction.SUCCESS_GET_TRANSACTION), this.transactionRepository.findById(id).get());
+    public Transaction findTransactionById(Integer id) {
+        if (!(this.transactionRepository.findById(id).isPresent()))
+            throw new NotFoundException(ResponseMessageTransaction.FAILED_GET_TRANSACTION);
+        return this.transactionRepository.findById(id).get();
     }
 
     @Override
-    public CustomResponse updateTransaction(Transaction transaction){
-        if (this.findTransactionById(transaction.getId()).getStatus().getCode().equals(HttpStatus.NOT_FOUND.value())) return this.findTransactionById(transaction.getId());
-        switch (transaction.getType()){
-            case "CASH":
+    public Transaction updateTransaction(Transaction transaction) {
+        this.findTransactionById(transaction.getId());
+        switch (transaction.getType()) {
+            case CASH:
                 transaction.setChange(getChangeTransaction(transaction));
-                break;
-            case "WALLET":
+            case WALLET:
                 transaction.setChange(getChangeTransaction(transaction));
-                Wallet wallet = walletService.findWalletByUser((User) userService.findUserById(transaction.getCustomerId()).getData());
-                wallet.setSaldo(wallet.getSaldo().subtract(transaction.getTotal()));
-                break;
+                Wallet wallet = walletService.findWalletByUser(userService.findUserById(transaction.getCustomerId()));
+                wallet.setBalance(wallet.getBalance().subtract(transaction.getTotal()));
         }
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseMessageTransaction.SUCCESS_UPDATE_TRANSACTION), this.saveTransaction(transaction).getData());
+        return this.saveTransaction(transaction);
     }
 
     private BigDecimal getChangeTransaction(Transaction transaction) {
@@ -89,8 +81,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public CustomResponse deleteTransactionById(Integer id) {
-        this.transactionRepository.delete((Transaction) this.findTransactionById(id).getData());
-        return new CustomResponse(new Status(HttpStatus.NO_CONTENT, ResponseMessageTransaction.SUCCESS_DELETE_TRANSACTION));
+    public void deleteTransactionById(Integer id) {
+        this.transactionRepository.delete(this.findTransactionById(id));
     }
 }

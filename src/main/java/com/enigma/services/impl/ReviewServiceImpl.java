@@ -1,20 +1,19 @@
 package com.enigma.services.impl;
 
-import com.enigma.constans.ResponseReviewConstants;
+import com.enigma.constans.ResponseMessageService;
 import com.enigma.entities.Review;
 import com.enigma.entities.Store;
 import com.enigma.entities.User;
+import com.enigma.exceptions.NotFoundException;
 import com.enigma.repositories.ReviewRepository;
 import com.enigma.services.ReviewService;
 import com.enigma.services.StoreService;
 import com.enigma.services.UserService;
-import com.enigma.services.impl.CustomResponse;
-import com.enigma.services.impl.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -30,10 +29,15 @@ public class ReviewServiceImpl implements ReviewService {
     StoreService storeService;
 
     @Override
-    public CustomResponse saveReview(Review review) {
-        if (!(review.getUserId().isEmpty())) review.setUsers(reviewHasUser((User) this.userService.findUserById(review.getUserId()).getData()));
-        if (review.getStoreId() != null) review.setStores(reviewHasStore((Store) this.storeService.findStoreById(review.getStoreId()).getData()));
-        return new CustomResponse(new Status(HttpStatus.CREATED, ResponseReviewConstants.SUCCESS_SAVE_REVIEW), this.reviewRepository.save(review));
+    public List<Review> findAllReview() {
+        return this.reviewRepository.findAll();
+    }
+
+    @Override
+    public Review saveReview(Review review) {
+        if (!(review.getUserId().isEmpty())) review.setUsers(reviewHasUser(this.userService.findUserById(review.getUserId())));
+        if (review.getStoreId() != null) review.setStores(reviewHasStore(this.storeService.findStoreById(review.getStoreId())));
+        return this.reviewRepository.save(review);
     }
 
     private Set<Store> reviewHasStore(Store store) {
@@ -49,25 +53,19 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public CustomResponse findAllReview() {
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseReviewConstants.SUCCESS_GET_REVIEWS), this.reviewRepository.findAll());
+    public Review findReviewById(Integer id) {
+        if (!(this.reviewRepository.findById(id).isPresent())) throw new NotFoundException(ResponseMessageService.FAILED_GET_SERVICE);
+        return this.reviewRepository.findById(id).get();
     }
 
     @Override
-    public CustomResponse deleteReview(Integer id) {
-        this.reviewRepository.delete((Review) this.findReviewById(id).getData());
-        return new CustomResponse(new Status(HttpStatus.NO_CONTENT, ResponseReviewConstants.SUCCESS_DELETE_REVIEW));
+    public Review updateReview(Review review) {
+        this.findReviewById(review.getId());
+        return this.saveReview(review);
     }
 
     @Override
-    public CustomResponse findReviewById(Integer id) {
-        if (!(this.reviewRepository.findById(id).isPresent())) return new CustomResponse(new Status(HttpStatus.NOT_FOUND, "Review is not found!"));
-        return new CustomResponse(new Status(HttpStatus.OK, ResponseReviewConstants.SUCCESS_GET_REVIEW), this.reviewRepository.findById(id).get());
-    }
-
-    @Override
-    public CustomResponse updateReview(Review review) {
-        if (this.findReviewById(review.getId()).getStatus().getCode().equals(HttpStatus.NOT_FOUND.value())) return this.findReviewById(review.getId());
-        else return new CustomResponse(new Status(HttpStatus.OK, ResponseReviewConstants.SUCCESS_UPDATE_REVIEW), this.saveReview(review).getData());
+    public void deleteReview(Integer id) {
+        this.reviewRepository.delete(this.findReviewById(id));
     }
 }

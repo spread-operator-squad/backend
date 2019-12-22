@@ -1,12 +1,13 @@
 package com.enigma.services;
 
 import com.enigma.entities.Transaction;
-import com.enigma.services.impl.CustomResponse;
+
+import java.util.List;
 
 public interface TransactionService {
-    CustomResponse findAll();
-    CustomResponse saveTransaction(Transaction transaction);
-    CustomResponse findTransactionById(Integer id);
-    CustomResponse updateTransaction(Transaction transaction);
-    CustomResponse deleteTransactionById(Integer id);
+    List<Transaction> findAll();
+    Transaction saveTransaction(Transaction transaction);
+    Transaction findTransactionById(Integer id);
+    Transaction updateTransaction(Transaction transaction);
+    void deleteTransactionById(Integer id);
 }

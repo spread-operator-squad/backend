@@ -1,12 +1,11 @@
 package com.enigma.controller;
 
 import com.enigma.entities.Item;
-import com.enigma.services.impl.CustomResponse;
 import com.enigma.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -17,33 +16,28 @@ public class ItemController {
     ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<CustomResponse> saveItem(@RequestBody Item item){
-        CustomResponse response = this.itemService.saveItem(item);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Item saveItem(@RequestBody Item item){
+        return this.itemService.saveItem(item);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomResponse> getItemById(@PathVariable Integer id){
-        CustomResponse response = this.itemService.findItemById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Item getItemById(@PathVariable Integer id){
+        return this.itemService.findItemById(id);
     }
 
     @GetMapping
-    public ResponseEntity<CustomResponse> getAllItem(){
-        CustomResponse response = this.itemService.findAllItem();
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public List<Item> getAllItem(){
+        return this.itemService.findAllItem();
     }
 
     @PutMapping
-    public ResponseEntity<CustomResponse> updateItem(@RequestBody Item item){
-        CustomResponse response = this.itemService.updateItem(item);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Item updateItem(@RequestBody Item item){
+        return this.itemService.updateItem(item);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomResponse> deleteItem(@PathVariable Integer id){
-        CustomResponse response = this.itemService.deleteItem(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public void deleteItem(@PathVariable Integer id){
+        this.itemService.deleteItem(id);
     }
 
 }

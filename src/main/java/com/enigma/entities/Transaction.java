@@ -1,5 +1,6 @@
 package com.enigma.entities;
 
+import com.enigma.enumeration.PaymentMethod;
 import com.enigma.enumeration.TransactionProgress;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -50,7 +51,7 @@ public class Transaction extends Auditable {
     private String customerId;
 
     @Transient
-    private String type;
+    private PaymentMethod type;
 
     private BigDecimal total;
     private BigDecimal pay;

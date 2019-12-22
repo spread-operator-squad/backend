@@ -1,13 +1,11 @@
 package com.enigma.controller;
 
-
 import com.enigma.entities.Address;
 import com.enigma.services.AddressService;
-import com.enigma.services.impl.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/address")
@@ -17,32 +15,27 @@ public class AddressController {
     AddressService addressService;
 
     @GetMapping
-    public ResponseEntity<CustomResponse> getAllAddress(){
-        CustomResponse response = this.addressService.findAll();
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public List<Address> getAllAddress(){
+        return this.addressService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomResponse> getAddressById(@PathVariable String id){
-        CustomResponse response = this.addressService.findAddressById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Address getAddressById(@PathVariable String id){
+        return this.addressService.findAddressById(id);
     }
 
     @PostMapping
-    public ResponseEntity<CustomResponse> saveAddress(@RequestBody Address address){
-        CustomResponse response = this.addressService.saveAddress(address);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Address saveAddress(@RequestBody Address address){
+        return this.addressService.saveAddress(address);
     }
 
     @PutMapping
-    public ResponseEntity<CustomResponse> updateAddress(@RequestBody Address address){
-        CustomResponse response = this.addressService.updateAddress(address);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Address updateAddress(@RequestBody Address address){
+        return this.addressService.updateAddress(address);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomResponse> deleteLocationByID(@PathVariable String id){
-        CustomResponse response = this.addressService.deleteAddressById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public void deleteLocationByID(@PathVariable String id){
+        this.addressService.deleteAddressById(id);
     }
 }

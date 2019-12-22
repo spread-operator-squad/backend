@@ -1,12 +1,12 @@
 package com.enigma.services;
 
 import com.enigma.entities.Store;
-import com.enigma.services.impl.CustomResponse;
+import java.util.List;
 
 public interface StoreService {
-    CustomResponse saveStore(Store store);
-    CustomResponse findAllStore();
-    CustomResponse deleteStore(Integer id);
-    CustomResponse findStoreById(Integer id);
-    CustomResponse updateStore(Store store);
+    List<Store> findAllStore();
+    Store saveStore(Store store);
+    Store findStoreById(Integer id);
+    Store updateStore(Store store);
+    void deleteStore(Integer id);
 }

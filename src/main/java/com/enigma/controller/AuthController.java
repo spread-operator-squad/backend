@@ -1,12 +1,11 @@
 package com.enigma.controller;
 
 import com.enigma.entities.User;
+import com.enigma.enumeration.Device;
+import com.enigma.security.JwtResponse;
 import com.enigma.services.AuthenticationService;
-import com.enigma.services.impl.CustomResponse;
 import com.enigma.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
@@ -23,15 +22,13 @@ public class AuthController {
 
     @PermitAll
     @PostMapping("/login")
-    public ResponseEntity<CustomResponse> createAuthenticationToken(@RequestBody User user) throws Exception{
-        CustomResponse response = this.authenticationService.createAuthenticationToken(user);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public JwtResponse createAuthenticationToken(@RequestBody User user, @RequestParam String type) throws Exception{
+        return this.authenticationService.createAuthenticationToken(user, Device.getDeviceByLabel(type));
     }
 
     @PermitAll
     @PostMapping("/registration")
-    public ResponseEntity<CustomResponse> registrationUser(@RequestBody User user){
-        CustomResponse response = this.userService.saveUser(user);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public User registrationUser(@RequestBody User user){
+        return this.userService.saveUser(user);
     }
 }

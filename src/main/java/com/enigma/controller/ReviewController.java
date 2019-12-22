@@ -1,48 +1,41 @@
 package com.enigma.controller;
 
-import com.enigma.entities.Item;
 import com.enigma.entities.Review;
-import com.enigma.services.ItemService;
 import com.enigma.services.ReviewService;
-import com.enigma.services.impl.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
+
     @Autowired
     ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<CustomResponse> saveReview(@RequestBody Review review){
-        CustomResponse response = this.reviewService.saveReview(review);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Review saveReview(@RequestBody Review review){
+        return this.reviewService.saveReview(review);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomResponse> getReviewById(@PathVariable Integer id){
-        CustomResponse response = this.reviewService.findReviewById(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Review getReviewById(@PathVariable Integer id){
+        return this.reviewService.findReviewById(id);
     }
 
     @GetMapping
-    public ResponseEntity<CustomResponse> getAllReview(){
-        CustomResponse response = this.reviewService.findAllReview();
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public List<Review> getAllReview(){
+        return this.reviewService.findAllReview();
     }
 
     @PutMapping
-    public ResponseEntity<CustomResponse> updateReview(@RequestBody Review review){
-        CustomResponse response = this.reviewService.updateReview(review);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public Review updateReview(@RequestBody Review review){
+        return this.reviewService.updateReview(review);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomResponse> deleteReview(@PathVariable Integer id){
-        CustomResponse response = this.reviewService.deleteReview(id);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
+    public void deleteReview(@PathVariable Integer id){
+        this.reviewService.deleteReview(id);
     }
 }

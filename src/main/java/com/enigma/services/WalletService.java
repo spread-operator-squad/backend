@@ -2,13 +2,14 @@ package com.enigma.services;
 
 import com.enigma.entities.User;
 import com.enigma.entities.Wallet;
-import com.enigma.services.impl.CustomResponse;
+
+import java.util.List;
 
 public interface WalletService {
-    CustomResponse findAllWallet();
-    CustomResponse saveWallet(Wallet wallet);
-    CustomResponse findWalletById(Integer id);
-    CustomResponse updateWallet(Wallet wallet);
-    CustomResponse deleteWalletById(Integer id);
+    List<Wallet> findAllWallet();
+    Wallet saveWallet(Wallet wallet);
+    Wallet findWalletById(Integer id);
+    Wallet updateWallet(Wallet wallet);
+    void deleteWalletById(Integer id);
     Wallet findWalletByUser(User user);
 }
