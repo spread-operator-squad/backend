@@ -1,4 +1,4 @@
-# Summary CLASS A
+# Backend System Laundry App
 
 You can support with the postman, there is already a sample payload available
 
