@@ -4,6 +4,7 @@ import com.enigma.constans.ResponseMessageUser;
 import com.enigma.entities.Role;
 import com.enigma.entities.User;
 import com.enigma.enumeration.UserRoles;
+import com.enigma.exceptions.BadRequestException;
 import com.enigma.exceptions.NotFoundException;
 import com.enigma.repositories.RoleRepository;
 import com.enigma.repositories.UserRepository;
@@ -42,6 +43,8 @@ public class UserServiceImpl implements UserService {
         if (!(user.getRoles().isEmpty())) user.setUserRoles(userHasRole(user));
         if (user.getUserDetail() != null) user.getUserDetail().setUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Throw exception when username is already exist on Database
+        if (userRepository.existsUserByUsernameIgnoreCase(user.getUsername())) throw new BadRequestException(String.format(ResponseMessageUser.ERROR_USERNAME_ALREADY, user.getUsername()));
         return this.userRepository.save(user);
     }
 
@@ -57,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(String id) {
-        if (!(this.userRepository.findById(id).isPresent())) throw new NotFoundException(ResponseMessageUser.FAILED_GET_USER);
+        if (!(this.userRepository.findById(id).isPresent())) throw new NotFoundException(ResponseMessageUser.SUCCESS_GET_USER);
         return this.userRepository.findById(id).get();
     }
 
