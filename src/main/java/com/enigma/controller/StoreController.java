@@ -3,8 +3,10 @@ package com.enigma.controller;
 import com.enigma.entities.Store;
 import com.enigma.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -15,7 +17,8 @@ public class StoreController {
     StoreService storeService;
 
     @PostMapping
-    public Store saveStore(@RequestBody Store store){
+    @ResponseStatus(HttpStatus.CREATED)
+    public Store saveStore(@Valid  @RequestBody Store store){
         return this.storeService.saveStore(store);
     }
 
@@ -30,11 +33,12 @@ public class StoreController {
     }
 
     @PutMapping
-    public Store updateStore(@RequestBody Store store){
+    public Store updateStore(@Valid @RequestBody Store store){
         return this.storeService.updateStore(store);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStore(@PathVariable Integer id){
         this.storeService.deleteStore(id);
     }
