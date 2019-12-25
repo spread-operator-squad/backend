@@ -10,6 +10,7 @@ import com.enigma.repositories.UserRepository;
 import com.enigma.services.RoleService;
 import com.enigma.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     RoleService roleService;
 
     @Override
@@ -37,6 +41,7 @@ public class UserServiceImpl implements UserService {
     public User saveUser(User user) {
         if (!(user.getRoles().isEmpty())) user.setUserRoles(userHasRole(user));
         if (user.getUserDetail() != null) user.getUserDetail().setUser(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
     }
 
