@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.save(user);
     }
 
-    private Set<Role> userHasRole(User user) {
+    public Set<Role> userHasRole(User user) {
         Set<Role> roles = new HashSet<>();
         if (!(user.getRoles().isEmpty())) {
             for (String role : user.getRoles()) {
