@@ -1,4 +1,4 @@
-package com.enigma.location.impl;
+package com.enigma.services.impl;
 
 import com.enigma.entities.Item;
 import com.enigma.entities.Location;
@@ -52,6 +52,13 @@ public class LocationServiceImplTest {
         Mockito.when(locationRepository.findById(1)).thenReturn(Optional.of(location1));
         locationService.findLocationById(1);
         Mockito.verify(locationRepository, Mockito.times(2)).findById(1);
+    }
+
+    @Test
+    void findLocationByType_should_Call_locationRepository_findByTypeContainingIgnoreCase_twice() {
+        Mockito.when(locationRepository.findByTypeContainingIgnoreCase("City")).thenReturn(new Location());
+        locationService.findLocationByType("City");
+        Mockito.verify(locationRepository, Mockito.times(2)).findByTypeContainingIgnoreCase("City");
     }
 
     @Test

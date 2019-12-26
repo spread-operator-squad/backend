@@ -1,4 +1,4 @@
-package com.enigma.address.impl;
+package com.enigma.services.impl;
 
 import com.enigma.entities.Address;
 import com.enigma.repositories.AddressRepository;

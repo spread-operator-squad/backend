@@ -1,4 +1,4 @@
-package com.enigma.backend.impl;
+package com.enigma.services.impl;
 
 import com.enigma.entities.BackendService;
 import com.enigma.entities.Item;

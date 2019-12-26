@@ -1,8 +1,10 @@
-package com.enigma.customerExperience.impl;
+package com.enigma.services.impl;
 
 import com.enigma.entities.CustomerExperience;
+import com.enigma.entities.User;
 import com.enigma.repositories.CustomerExperienceRepository;
 import com.enigma.services.CustomerExperienceService;
+import com.enigma.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -20,6 +22,9 @@ public class CustomerExperienceImplTest {
     @MockBean
     CustomerExperienceRepository customerExperienceRepository;
 
+    @MockBean
+    UserService userService;
+
     @SpyBean
     CustomerExperienceService customerExperienceService;
 
@@ -34,7 +39,9 @@ public class CustomerExperienceImplTest {
         CustomerExperience customer = new CustomerExperience();
         customer.setId(1);
         customer.setLevel("master");
+        customer.setUserId("id");
         customer.setPoint(50);
+        Mockito.when(userService.findUserById("id")).thenReturn(new User());
         customerExperienceService.saveCustomerExperience(customer);
         Mockito.verify(customerExperienceRepository, Mockito.times(1)).save(customer);
     }
@@ -67,10 +74,11 @@ public class CustomerExperienceImplTest {
         customer.setId(1);
         customer.setLevel("master");
         customer.setPoint(50);
+        customer.setUserId("id");
+        Mockito.when(userService.findUserById("id")).thenReturn(new User());
         Mockito.when(customerExperienceRepository.findById(1)).thenReturn(Optional.of(customer));
-        Mockito.when(customerExperienceService.saveCustomerExperience(customer)).thenReturn(customer);
         customerExperienceService.updateCustomerExperience(customer);
-        Mockito.verify(customerExperienceService, Mockito.times(1)).updateCustomerExperience(customer);
+        Mockito.verify(customerExperienceService, Mockito.times(1)).saveCustomerExperience(customer);
     }
 
     @Test
