@@ -1,4 +1,4 @@
-package com.enigma.item;
+package com.enigma.services.impl;
 
 import com.enigma.entities.Item;
 import com.enigma.repositories.ItemRepository;
