@@ -10,4 +10,5 @@ public interface ServicesService {
     Services findServicesById(Integer id);
     Services updateServices(Services services);
     void deleteServices(Integer id);
+    List<Services> findAllServicesByIdStore(Integer id);
 }

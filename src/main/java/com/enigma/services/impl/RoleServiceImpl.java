@@ -19,23 +19,24 @@ public class RoleServiceImpl implements CommandLineRunner, RoleService {
 
     @Override
     public void run(String... args) throws Exception {
-        this.roleRepository.deleteAll();
-        // Create Role
-        List<Role> roles = new ArrayList<>();
-        for (UserRoles userRole: UserRoles.values()) {
-            roles.add(new Role(userRole));
+        if (roleRepository.findAll().isEmpty()) {
+            this.roleRepository.deleteAll();
+            // Create Role
+            List<Role> roles = new ArrayList<>();
+            for (UserRoles userRole : UserRoles.values()) {
+                roles.add(new Role(userRole));
+            }
+            this.roleRepository.saveAll(roles);
         }
-
-        this.roleRepository.saveAll(roles);
     }
 
     @Override
-    public Role getRoleByRoles(UserRoles role){
+    public Role getRoleByRoles(UserRoles role) {
         return roleRepository.findRoleByUserRoles(role);
     }
 
     @Override
-    public Role getRoleById(Integer id){
+    public Role getRoleById(Integer id) {
         return roleRepository.findById(id).get();
     }
 }

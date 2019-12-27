@@ -27,7 +27,8 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address saveAddress(Address address) {
-        return null;
+        if (address.getLocationId() != null) address.setLocation(locationService.findLocationById(address.getLocationId()));
+        return addressRepository.save(address);
     }
 
     @Override
