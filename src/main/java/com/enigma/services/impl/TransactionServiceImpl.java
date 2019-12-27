@@ -44,7 +44,7 @@ public class TransactionServiceImpl implements TransactionService {
         return this.transactionRepository.save(transaction);
     }
 
-    private BigDecimal getTotalPrice(Transaction transaction) {
+    public BigDecimal getTotalPrice(Transaction transaction) {
         BigDecimal totalPrice = new BigDecimal(0);
         for (TransactionDetail detail : transaction.getTransactionDetails()) {
             Services services = servicesService.findServicesById(detail.getServicesId());
@@ -76,7 +76,7 @@ public class TransactionServiceImpl implements TransactionService {
         return this.saveTransaction(transaction);
     }
 
-    private BigDecimal getChangeTransaction(Transaction transaction) {
+    public BigDecimal getChangeTransaction(Transaction transaction) {
         return transaction.getTotal().subtract(transaction.getPay());
     }
 

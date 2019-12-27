@@ -29,10 +29,10 @@ public class Store extends Auditable {
     @Transient
     private String ownerId;
 
-    @OneToMany(mappedBy = "stores", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Item> items;
 
-    @OneToMany(mappedBy = "stores", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Services> services;
 
     @ManyToMany(mappedBy = "stores")
