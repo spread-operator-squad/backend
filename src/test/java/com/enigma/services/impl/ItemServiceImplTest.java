@@ -93,6 +93,6 @@ public class ItemServiceImplTest {
     void findAllItemByIdStore_should_call_storeRepository_once() {
         Mockito.when(storeService.findStoreById(1)).thenReturn(new Store());
         itemService.findAllItemByIdStore(1);
-        Mockito.verify(storeService, Mockito.times(1)).findAllStore();
+        Mockito.verify(storeService, Mockito.times(1)).findStoreById(1);
     }
 }
