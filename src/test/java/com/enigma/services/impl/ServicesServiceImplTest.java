@@ -90,4 +90,11 @@ class ServicesServiceImplTest {
         servicesService.deleteServices(1);
         Mockito.verify(servicesService, Mockito.times(1)).deleteServices(1);
     }
+
+    @Test
+    void findAllServicesByIdStore_should_call_storeService_once() {
+        Mockito.when(storeService.findStoreById(1)).thenReturn(new Store());
+        servicesService.findAllServicesByIdStore(1);
+        Mockito.verify(storeService, Mockito.times(1)).findStoreById(1);
+    }
 }

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -30,10 +29,10 @@ public class Services extends Auditable {
     @ManyToOne()
     @JsonIgnore
     @JoinColumn(name = "store_id")
-    private Store stores;
+    private Store store;
 
     public Integer getStoreId() {
-        if (stores != null) return stores.getId();
+        if (store != null) return store.getId();
         return storeId;
     }
 

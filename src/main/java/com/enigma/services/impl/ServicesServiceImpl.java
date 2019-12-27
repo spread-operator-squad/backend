@@ -27,7 +27,7 @@ public class ServicesServiceImpl implements ServicesService {
 
     @Override
     public Services saveServices(Services services) {
-        if (services.getStoreId() != null) services.setStores(storeService.findStoreById(services.getStoreId()));
+        if (services.getStoreId() != null) services.setStore(storeService.findStoreById(services.getStoreId()));
         return this.serviceRepository.save(services);
     }
 
@@ -46,5 +46,10 @@ public class ServicesServiceImpl implements ServicesService {
     @Override
     public void deleteServices(Integer id) {
         this.serviceRepository.delete(this.findServicesById(id));
+    }
+
+    @Override
+    public List<Services> findAllServicesByIdStore(Integer id) {
+        return this.serviceRepository.findAllByStore(this.storeService.findStoreById(id));
     }
 }
