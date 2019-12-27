@@ -1,8 +1,10 @@
 package com.enigma.services.impl;
 
 import com.enigma.entities.Item;
+import com.enigma.entities.Store;
 import com.enigma.repositories.ItemRepository;
 import com.enigma.services.ItemService;
+import com.enigma.services.StoreService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -20,6 +22,9 @@ public class ItemServiceImplTest {
 
     @MockBean
     ItemRepository itemRepository;
+
+    @MockBean
+    StoreService storeService;
 
     @SpyBean
     ItemService itemService;
@@ -84,4 +89,10 @@ public class ItemServiceImplTest {
         Mockito.verify(itemRepository, Mockito.times(1)).delete(item1);
     }
 
+    @Test
+    void findAllItemByIdStore_should_call_storeRepository_once() {
+        Mockito.when(storeService.findStoreById(1)).thenReturn(new Store());
+        itemService.findAllItemByIdStore(1);
+        Mockito.verify(storeService, Mockito.times(1)).findAllStore();
+    }
 }

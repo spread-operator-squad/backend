@@ -27,7 +27,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item saveItem(Item item) {
-        if (item.getStoreId() != null) item.setStores(storeService.findStoreById(item.getStoreId()));
+        if (item.getStoreId() != null) item.setStore(storeService.findStoreById(item.getStoreId()));
         return this.itemRepository.save(item);
     }
 
@@ -47,5 +47,10 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(Integer id) {
         this.itemRepository.delete(findItemById(id));
 
+    }
+
+    @Override
+    public List<Item> findAllItemByIdStore(Integer id) {
+        return this.itemRepository.findAllByStore(this.storeService.findStoreById(id));
     }
 }
