@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,16 +14,20 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "transactions")
 public class Transaction extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date dateStart;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date dateEnd;
     private TransactionProgress transactionProgress;
 
