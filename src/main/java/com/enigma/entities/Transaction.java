@@ -53,7 +53,7 @@ public class Transaction extends Auditable {
     private User customer;
 
     @Transient
-    private String customerId;
+    private String customerUsername;
 
     @Transient
     private PaymentMethod type;
@@ -75,8 +75,8 @@ public class Transaction extends Auditable {
         return operatorId;
     }
 
-    public String getCustomerId() {
-        if (customer != null) return  customer.getId();
-        return customerId;
+    public String getCustomerUsername() {
+        if (customer != null) return  customer.getUsername();
+        return customerUsername;
     }
 }

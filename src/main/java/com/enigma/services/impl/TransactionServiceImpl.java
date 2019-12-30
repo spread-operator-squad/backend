@@ -70,7 +70,7 @@ public class TransactionServiceImpl implements TransactionService {
                 transaction.setChange(getChangeTransaction(transaction));
             case WALLET:
                 transaction.setChange(getChangeTransaction(transaction));
-                Wallet wallet = walletService.findWalletByUser(userService.findUserById(transaction.getCustomerId()));
+                Wallet wallet = walletService.findWalletByUser(userService.findUserByUsername(transaction.getCustomerUsername()));
                 wallet.setBalance(wallet.getBalance().subtract(transaction.getTotal()));
         }
         return this.saveTransaction(transaction);
