@@ -5,8 +5,8 @@ import com.enigma.enumeration.Device;
 import com.enigma.exceptions.BadRequestException;
 import com.enigma.security.JwtProperty;
 import com.enigma.security.JwtResponse;
-import com.enigma.security.UserPrincipalDetailsService;
 import com.enigma.services.AuthenticationService;
+import com.enigma.services.UserService;
 import com.enigma.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +21,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserPrincipalDetailsService userDetailsService;
+    UserPrincipalDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     JwtUtil jwtTokenUtil;
@@ -38,6 +41,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(user.getUsername());
-        return new JwtResponse(JwtProperty.TYPE, jwtTokenUtil.generateToken(userDetails, type));
+
+        // Find user ID from given username
+        String userId = userService.findUserByUsername(user.getUsername()).getId();
+        return new JwtResponse(JwtProperty.TYPE, jwtTokenUtil.generateToken(userDetails, type, userId));
     }
 }

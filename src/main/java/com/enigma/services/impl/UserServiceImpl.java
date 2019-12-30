@@ -81,4 +81,10 @@ public class UserServiceImpl implements UserService {
         userFound.setIsActive(false);
         return this.updateUser(userFound);
     }
+
+    @Override
+    public User findUserByUsername(String username) {
+        if (this.userRepository.findUserByUsername(username) == null) throw new NotFoundException(String.format(ResponseMessageUser.ERROR_USERNAME_NOT_FOUND, username));
+        return this.userRepository.findUserByUsername(username);
+    }
 }

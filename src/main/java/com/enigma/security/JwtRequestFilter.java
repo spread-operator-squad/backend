@@ -1,5 +1,6 @@
 package com.enigma.security;
 
+import com.enigma.services.impl.UserPrincipalDetailsServiceImpl;
 import com.enigma.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +20,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UserPrincipalDetailsService userDetailsService;
+    private UserPrincipalDetailsServiceImpl userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;

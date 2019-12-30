@@ -36,13 +36,14 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails, Device type) {
-        return createToken(userDetails, type);
+    public String generateToken(UserDetails userDetails, Device type, String userId) {
+        return createToken(userDetails, type, userId);
     }
 
-    private String createToken(UserDetails userDetails, Device type) {
+    private String createToken(UserDetails userDetails, Device type, String userId) {
         Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
         claims.put("scopes", userDetails.getAuthorities());
+        claims.setId(userId);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
