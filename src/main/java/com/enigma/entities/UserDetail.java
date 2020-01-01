@@ -24,13 +24,15 @@ public class UserDetail extends Auditable{
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date birthDate;
-    private String avatar;
     private Gender gender;
 
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne(mappedBy = "userDetail", cascade = CascadeType.ALL)
+    private Address address;
 
     public void setGender(String gender) {
         this.gender = Gender.getGenderByLabel(gender);

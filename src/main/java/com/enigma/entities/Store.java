@@ -24,7 +24,9 @@ public class Store extends Auditable {
     private Integer id;
     @NotEmpty(message = "Please provide name")
     private String name;
-    private String avatar;
+
+    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
+    private Address address;
 
     @Transient
     private String ownerId;
@@ -45,6 +47,9 @@ public class Store extends Auditable {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
+
+    @OneToMany(mappedBy = "operatorStore",cascade = CascadeType.ALL)
+    private Set<User> operator = new HashSet<>();
 
     public String getOwnerId() {
         if (owner != null) return owner.getId();

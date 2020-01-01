@@ -13,24 +13,19 @@ import javax.persistence.*;
 @Table(name = "address")
 public class Address extends Auditable{
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
-    private String addressName;
+    private String description;
     private String latitude;
     private String longitude;
 
-    @Transient
-    private Integer locationId;
-
-    @ManyToOne()
+    @OneToOne
     @JsonIgnore
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @JoinColumn(name = "user_id")
+    private UserDetail userDetail;
 
-    public Integer getLocationId() {
-        if (location != null) return location.getId();
-        return locationId;
-    }
-
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "store_id")
+    private Store store;
 }
