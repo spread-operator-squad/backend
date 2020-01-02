@@ -28,6 +28,9 @@ public class TransactionServiceImpl implements TransactionService {
     ItemService itemService;
 
     @Autowired
+    StoreService storeService;
+
+    @Autowired
     WalletService walletService;
 
     @Override
@@ -40,6 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setTotal(getTotalPrice(transaction));
         if (transaction.getCustomerUsername() != null) transaction.setCustomer(userService.findUserByUsername(transaction.getCustomerUsername()));
         if (transaction.getOperatorId() != null) transaction.setOperator(userService.findUserById(transaction.getOperatorId()));
+        if (transaction.getStoresId() != null) transaction.setStores(storeService.findStoreById(transaction.getStoresId()));
         for (TransactionDetail detail : transaction.getTransactionDetails()) {
             detail.setTransaction(transaction);
         }
