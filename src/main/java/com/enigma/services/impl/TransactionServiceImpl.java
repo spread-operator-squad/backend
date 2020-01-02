@@ -29,6 +29,9 @@ public class TransactionServiceImpl implements TransactionService {
     ItemService itemService;
 
     @Autowired
+    StoreService storeService;
+
+    @Autowired
     WalletService walletService;
 
     @Override
@@ -42,6 +45,9 @@ public class TransactionServiceImpl implements TransactionService {
             transaction.setTransactionProgress(TransactionProgress.WAITING);
         }
         transaction.setTotal(getTotalPrice(transaction));
+        if (transaction.getCustomerUsername() != null) transaction.setCustomer(userService.findUserByUsername(transaction.getCustomerUsername()));
+        if (transaction.getOperatorId() != null) transaction.setOperator(userService.findUserById(transaction.getOperatorId()));
+        if (transaction.getStoresId() != null) transaction.setStores(storeService.findStoreById(transaction.getStoresId()));
         for (TransactionDetail detail : transaction.getTransactionDetails()) {
             detail.setTransaction(transaction);
         }
@@ -53,6 +59,8 @@ public class TransactionServiceImpl implements TransactionService {
         for (TransactionDetail detail : transaction.getTransactionDetails()) {
             Services services = servicesService.findServicesById(detail.getServicesId());
             Item item = itemService.findItemById(detail.getItemId());
+            if (detail.getServicesId() != null) detail.setServices(servicesService.findServicesById(detail.getServicesId()));
+            if (detail.getItemId() != null) detail.setItem(itemService.findItemById(detail.getItemId()));
             detail.setSubtotal(services.getPrice().add(item.getPrice().multiply(new BigDecimal(detail.getWeight()))));
             totalPrice = totalPrice.add(detail.getSubtotal());
         }
