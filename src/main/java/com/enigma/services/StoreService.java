@@ -9,4 +9,5 @@ public interface StoreService {
     Store findStoreById(Integer id);
     Store updateStore(Store store);
     void deleteStore(Integer id);
+    List<Store> findStoreByOwner(String id);
 }

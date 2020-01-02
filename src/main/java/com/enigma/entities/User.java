@@ -1,6 +1,7 @@
 package com.enigma.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,10 @@ import java.util.*;
 @Getter
 @Setter
 @Table(name = "users")
+@JsonIgnoreProperties(
+        value = {"operatorStore"},
+        allowSetters = true
+)
 public class User extends Auditable {
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -41,23 +46,33 @@ public class User extends Auditable {
     )
     private Set<Role> userRoles = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Wallet> wallets;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CustomerExperience> customerExperiences;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "users")
     private Set<Review> reviews = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Transaction> customer = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "operator", cascade = CascadeType.ALL)
     private List<Transaction> operator = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Store> stores = new ArrayList<>();
+    private List<Store> ownerStore = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store operatorStore;
 
     public Set<String> getRoles() {
         if (!(userRoles.isEmpty())) {

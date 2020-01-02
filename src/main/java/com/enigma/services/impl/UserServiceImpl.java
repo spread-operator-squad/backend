@@ -2,6 +2,7 @@ package com.enigma.services.impl;
 
 import com.enigma.constans.ResponseMessageUser;
 import com.enigma.entities.Role;
+import com.enigma.entities.Store;
 import com.enigma.entities.User;
 import com.enigma.enumeration.UserRoles;
 import com.enigma.exceptions.BadRequestException;
@@ -9,6 +10,7 @@ import com.enigma.exceptions.NotFoundException;
 import com.enigma.repositories.RoleRepository;
 import com.enigma.repositories.UserRepository;
 import com.enigma.services.RoleService;
+import com.enigma.services.StoreService;
 import com.enigma.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +35,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RoleService roleService;
 
+    @Autowired
+    StoreService storeService;
+
     @Override
     public List<User> findAll() {
         return this.userRepository.findAll();
@@ -41,7 +46,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User user) {
         if (!(user.getRoles().isEmpty())) user.setUserRoles(userHasRole(user));
-        if (user.getUserDetail() != null) user.getUserDetail().setUser(user);
+        if (user.getUserDetail() != null) {
+            user.getUserDetail().setUser(user);
+            user.getUserDetail().getAddress().setUserDetail(user.getUserDetail());
+        }
+        if (user.getOperatorStore() != null) {
+            Store store = storeService.findStoreById(user.getOperatorStore().getId());
+            store.getOperator().add(user);
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         // Throw exception when username is already exist on Database
         if (userRepository.existsUserByUsernameIgnoreCase(user.getUsername())) throw new BadRequestException(String.format(ResponseMessageUser.ERROR_USERNAME_ALREADY, user.getUsername()));

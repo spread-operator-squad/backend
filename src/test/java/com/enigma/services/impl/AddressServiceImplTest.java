@@ -32,7 +32,7 @@ public class AddressServiceImplTest {
     @Test
     void saveAddress_should_call_addressRepository_save_once() {
         Address address1 = new Address();
-        address1.setAddressName("Ragunan");
+        address1.setDescription("Ragunan");
         address1.setLatitude("latitude");
         address1.setLongitude("longtitude");
         addressService.saveAddress(address1);
@@ -43,7 +43,7 @@ public class AddressServiceImplTest {
     void findAddressById_should_call_addressRepository_findById_twice() {
         Address address1 = new Address();
         address1.setId("id");
-        address1.setAddressName("Ragunan");
+        address1.setDescription("Ragunan");
         address1.setLatitude("latitude");
         address1.setLongitude("longtitude");
         Mockito.when(addressRepository.findById("id")).thenReturn(Optional.of(address1));
@@ -55,7 +55,7 @@ public class AddressServiceImplTest {
     void updateAddress_should_call_addressService_findAddressById_once() {
         Address address1 = new Address();
         address1.setId("id");
-        address1.setAddressName("Ragunan");
+        address1.setDescription("Ragunan");
         address1.setLatitude("latitude");
         address1.setLongitude("longtitude");
         Mockito.when(addressRepository.findById("id")).thenReturn(Optional.of(address1));
@@ -67,7 +67,7 @@ public class AddressServiceImplTest {
     void updateAddress_should_call_addressService_save_once() {
         Address address1 = new Address();
         address1.setId("id");
-        address1.setAddressName("Ragunan");
+        address1.setDescription("Ragunan");
         address1.setLatitude("latitude");
         address1.setLongitude("longtitude");
         Mockito.when(addressRepository.findById("id")).thenReturn(Optional.of(address1));
@@ -80,7 +80,7 @@ public class AddressServiceImplTest {
     void deleteAddressById_should_call_addressRepository_delete_once() {
         Address address1 = new Address();
         address1.setId("id");
-        address1.setAddressName("Ragunan");
+        address1.setDescription("Ragunan");
         address1.setLatitude("latitude");
         address1.setLongitude("longtitude");
         Mockito.when(addressRepository.findById("id")).thenReturn(Optional.of(address1));

@@ -1,11 +1,10 @@
 package com.enigma.services.impl;
 
-import com.enigma.constans.ResponseMessageLocation;
+import com.enigma.constans.ResponseMessageAddress;
 import com.enigma.entities.Address;
 import com.enigma.exceptions.NotFoundException;
 import com.enigma.repositories.AddressRepository;
 import com.enigma.services.AddressService;
-import com.enigma.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +16,6 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     AddressRepository addressRepository;
 
-    @Autowired
-    LocationService locationService;
-
     @Override
     public List<Address> findAll() {
         return this.addressRepository.findAll();
@@ -27,14 +23,13 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address saveAddress(Address address) {
-        if (address.getLocationId() != null) address.setLocation(locationService.findLocationById(address.getLocationId()));
         return addressRepository.save(address);
     }
 
     @Override
     public Address findAddressById(String id) {
         if (!(this.addressRepository.findById(id).isPresent()))
-            throw new NotFoundException(ResponseMessageLocation.FAILED_GET_LOCATION);
+            throw new NotFoundException(ResponseMessageAddress.FAILED_GET_ADDRESS);
         return this.addressRepository.findById(id).get();
     }
 

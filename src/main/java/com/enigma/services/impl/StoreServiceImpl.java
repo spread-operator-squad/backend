@@ -29,6 +29,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Store saveStore(Store store) {
         if (!(store.getOwnerId().isEmpty())) store.setOwner(userService.findUserById(store.getOwnerId()));
+        if (store.getAddress() != null) store.getAddress().setStore(store);
         return storeRepository.save(store);
     }
 
@@ -47,5 +48,10 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public void deleteStore(Integer id) {
         this.storeRepository.delete(this.findStoreById(id));
+    }
+
+    @Override
+    public List<Store> findStoreByOwner(String id) {
+        return this.storeRepository.findAllByOwner(userService.findUserById(id));
     }
 }

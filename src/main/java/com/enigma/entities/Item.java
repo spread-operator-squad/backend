@@ -25,7 +25,7 @@ public class Item extends Auditable {
     @Transient
     private Integer storeId;
 
-    @ManyToOne()
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "store_id")
     private Store store;
@@ -35,6 +35,7 @@ public class Item extends Auditable {
         return storeId;
     }
 
+    @JsonIgnore
     @OneToMany (mappedBy = "item", cascade = CascadeType.ALL)
     private List<TransactionDetail> transactionDetails;
 }

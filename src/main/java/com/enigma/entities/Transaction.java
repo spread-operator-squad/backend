@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -40,7 +41,6 @@ public class Transaction extends Auditable {
     private Integer storesId;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JsonIgnore
     @JoinColumn(name = "operator_id")
     private User operator;
 
@@ -48,11 +48,11 @@ public class Transaction extends Auditable {
     private String operatorId;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JsonIgnore
     @JoinColumn(name = "customer_id")
     private User customer;
 
     @Transient
+    @Nullable
     private String customerUsername;
 
     @Transient
