@@ -42,6 +42,7 @@ public class Transaction extends Auditable {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "operator_id")
+    @JsonIgnore
     private User operator;
 
     @Transient
@@ -49,6 +50,7 @@ public class Transaction extends Auditable {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private User customer;
 
     @Transient

@@ -38,6 +38,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction saveTransaction(Transaction transaction) {
         transaction.setTotal(getTotalPrice(transaction));
+        if (transaction.getCustomerUsername() != null) transaction.setCustomer(userService.findUserByUsername(transaction.getCustomerUsername()));
+        if (transaction.getOperatorId() != null) transaction.setOperator(userService.findUserById(transaction.getOperatorId()));
         for (TransactionDetail detail : transaction.getTransactionDetails()) {
             detail.setTransaction(transaction);
         }
@@ -49,6 +51,8 @@ public class TransactionServiceImpl implements TransactionService {
         for (TransactionDetail detail : transaction.getTransactionDetails()) {
             Services services = servicesService.findServicesById(detail.getServicesId());
             Item item = itemService.findItemById(detail.getItemId());
+            if (detail.getServicesId() != null) detail.setServices(servicesService.findServicesById(detail.getServicesId()));
+            if (detail.getItemId() != null) detail.setItem(itemService.findItemById(detail.getItemId()));
             detail.setSubtotal(services.getPrice().add(item.getPrice().multiply(new BigDecimal(detail.getWeight()))));
             totalPrice = totalPrice.add(detail.getSubtotal());
         }
