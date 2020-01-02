@@ -3,6 +3,7 @@ package com.enigma.services.impl;
 
 import com.enigma.constans.ResponseMessageTransaction;
 import com.enigma.entities.*;
+import com.enigma.enumeration.TransactionProgress;
 import com.enigma.exceptions.NotFoundException;
 import com.enigma.repositories.TransactionRepository;
 import com.enigma.services.*;
@@ -37,6 +38,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction saveTransaction(Transaction transaction) {
+        if(transaction.getTransactionProgress() == null){
+            transaction.setTransactionProgress(TransactionProgress.WAITING);
+        }
         transaction.setTotal(getTotalPrice(transaction));
         for (TransactionDetail detail : transaction.getTransactionDetails()) {
             detail.setTransaction(transaction);
