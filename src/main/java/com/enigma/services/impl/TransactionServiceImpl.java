@@ -3,6 +3,7 @@ package com.enigma.services.impl;
 
 import com.enigma.constans.ResponseMessageTransaction;
 import com.enigma.entities.*;
+import com.enigma.enumeration.TransactionProgress;
 import com.enigma.exceptions.NotFoundException;
 import com.enigma.repositories.TransactionRepository;
 import com.enigma.services.*;
@@ -28,6 +29,9 @@ public class TransactionServiceImpl implements TransactionService {
     ItemService itemService;
 
     @Autowired
+    StoreService storeService;
+
+    @Autowired
     WalletService walletService;
 
     @Override
@@ -37,18 +41,26 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction saveTransaction(Transaction transaction) {
+        if(transaction.getTransactionProgress() == null){
+            transaction.setTransactionProgress(TransactionProgress.WAITING);
+        }
         transaction.setTotal(getTotalPrice(transaction));
+        if (transaction.getCustomerUsername() != null) transaction.setCustomer(userService.findUserByUsername(transaction.getCustomerUsername()));
+        if (transaction.getOperatorId() != null) transaction.setOperator(userService.findUserById(transaction.getOperatorId()));
+        if (transaction.getStoresId() != null) transaction.setStores(storeService.findStoreById(transaction.getStoresId()));
         for (TransactionDetail detail : transaction.getTransactionDetails()) {
             detail.setTransaction(transaction);
         }
         return this.transactionRepository.save(transaction);
     }
 
-    private BigDecimal getTotalPrice(Transaction transaction) {
+    public BigDecimal getTotalPrice(Transaction transaction) {
         BigDecimal totalPrice = new BigDecimal(0);
         for (TransactionDetail detail : transaction.getTransactionDetails()) {
             Services services = servicesService.findServicesById(detail.getServicesId());
             Item item = itemService.findItemById(detail.getItemId());
+            if (detail.getServicesId() != null) detail.setServices(servicesService.findServicesById(detail.getServicesId()));
+            if (detail.getItemId() != null) detail.setItem(itemService.findItemById(detail.getItemId()));
             detail.setSubtotal(services.getPrice().add(item.getPrice().multiply(new BigDecimal(detail.getWeight()))));
             totalPrice = totalPrice.add(detail.getSubtotal());
         }
@@ -70,13 +82,13 @@ public class TransactionServiceImpl implements TransactionService {
                 transaction.setChange(getChangeTransaction(transaction));
             case WALLET:
                 transaction.setChange(getChangeTransaction(transaction));
-                Wallet wallet = walletService.findWalletByUser(userService.findUserById(transaction.getCustomerId()));
+                Wallet wallet = walletService.findWalletByUser(userService.findUserByUsername(transaction.getCustomerUsername()));
                 wallet.setBalance(wallet.getBalance().subtract(transaction.getTotal()));
         }
         return this.saveTransaction(transaction);
     }
 
-    private BigDecimal getChangeTransaction(Transaction transaction) {
+    public BigDecimal getChangeTransaction(Transaction transaction) {
         return transaction.getTotal().subtract(transaction.getPay());
     }
 

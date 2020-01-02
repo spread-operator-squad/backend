@@ -13,6 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class UserServiceImplTest {
@@ -81,5 +83,23 @@ class UserServiceImplTest {
         Mockito.when(userRepository.findById("id")).thenReturn(Optional.of(sampleUser));
         userService.deleteUserById("id");
         Mockito.verify(userRepository, Mockito.times(1)).delete(sampleUser);
+    }
+
+    @Test
+    void blockUserById_should_return_isActive_false() {
+        User sampleUser = new User();
+        sampleUser.setId("id");
+        sampleUser.setIsActive(false);
+        sampleUser.setUsername("jhon");
+        sampleUser.setPassword("thor");
+
+        User actualUser = new User();
+        actualUser.setId("id");
+        actualUser.setUsername("jhon");
+        actualUser.setPassword("thor");
+        actualUser.setIsActive(false);
+        Mockito.when(userRepository.findById("id")).thenReturn(Optional.of(sampleUser));
+        Mockito.when(userService.blockUserById("id")).thenReturn(actualUser);
+        assertEquals(userService.blockUserById("id"), actualUser);
     }
 }

@@ -1,11 +1,12 @@
 package com.enigma.controller;
 
-import com.enigma.constans.RoleConstants;
 import com.enigma.entities.User;
 import com.enigma.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,16 +27,18 @@ public class UserController {
     }
 
     @PostMapping
-    public User saveUser(@RequestBody User user){
+    @ResponseStatus(HttpStatus.CREATED)
+    public User saveUser(@Valid @RequestBody User user){
         return this.userService.saveUser(user);
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user){
+    public User updateUser(@Valid @RequestBody User user){
         return this.userService.updateUser(user);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserByID(@PathVariable String id){
         this.userService.deleteUserById(id);
     }

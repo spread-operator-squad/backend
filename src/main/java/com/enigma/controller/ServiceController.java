@@ -1,5 +1,6 @@
 package com.enigma.controller;
 
+import com.enigma.entities.Item;
 import com.enigma.entities.Services;
 import com.enigma.services.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,4 +41,8 @@ public class ServiceController {
         this.servicesService.deleteServices(id);
     }
 
+    @GetMapping("/store")
+    public List<Services> getAllItemByStoreId(@RequestParam Integer id) {
+        return this.servicesService.findAllServicesByIdStore(id);
+    }
 }

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,16 +15,20 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "transactions")
 public class Transaction extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date dateStart;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date dateEnd;
     private TransactionProgress transactionProgress;
 
@@ -35,20 +41,21 @@ public class Transaction extends Auditable {
     private Integer storesId;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JsonIgnore
     @JoinColumn(name = "operator_id")
+    @JsonIgnore
     private User operator;
 
     @Transient
     private String operatorId;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JsonIgnore
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private User customer;
 
     @Transient
-    private String customerId;
+    @Nullable
+    private String customerUsername;
 
     @Transient
     private PaymentMethod type;
@@ -70,8 +77,8 @@ public class Transaction extends Auditable {
         return operatorId;
     }
 
-    public String getCustomerId() {
-        if (customer != null) return  customer.getId();
-        return customerId;
+    public String getCustomerUsername() {
+        if (customer != null) return  customer.getUsername();
+        return customerUsername;
     }
 }

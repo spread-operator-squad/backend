@@ -40,4 +40,8 @@ public class ItemController {
         this.itemService.deleteItem(id);
     }
 
+    @GetMapping("/store")
+    public List<Item> getAllItemByStoreId(@RequestParam Integer id) {
+        return this.itemService.findAllItemByIdStore(id);
+    }
 }

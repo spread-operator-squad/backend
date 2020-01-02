@@ -10,4 +10,5 @@ public interface ItemService {
     Item findItemById(Integer id);
     Item updateItem(Item item);
     void deleteItem(Integer id);
+    List<Item> findAllItemByIdStore(Integer id);
 }
