@@ -44,4 +44,8 @@ public class StoreController {
         this.storeService.deleteStore(id);
     }
 
+    @GetMapping("/owner")
+    public List<Store> getStoreByOwner(@RequestParam String id) {
+        return this.storeService.findStoreByOwner(id);
+    }
 }

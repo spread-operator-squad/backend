@@ -49,4 +49,9 @@ public class StoreServiceImpl implements StoreService {
     public void deleteStore(Integer id) {
         this.storeRepository.delete(this.findStoreById(id));
     }
+
+    @Override
+    public List<Store> findStoreByOwner(String id) {
+        return this.storeRepository.findAllByOwner(userService.findUserById(id));
+    }
 }
